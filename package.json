@@ -1,0 +1,13 @@
+{
+    "name": "picture-pi",
+    "version": "0.0.1",
+    "description": "A small node app to serve pictures hosted on a Synology NAS",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "author": "Rob Cook <robcook@gmail.com>",
+    "dependencies": {
+        "synology-node-api": "^1.0.15"
+    }
+}
