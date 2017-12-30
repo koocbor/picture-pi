@@ -8,6 +8,11 @@
     },
     "author": "Rob Cook <robcook@gmail.com>",
     "dependencies": {
-        "synology-node-api": "^1.0.15"
-    }
+        "dotenv": "^4.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/koocbor/picture-pi"
+    },
+    "license": "MIT"
 }
