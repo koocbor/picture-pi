@@ -3,13 +3,31 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+    <style>
+      body {
+        background-color:#000000;
+      }
+
+      div.fill-screen {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        text-align: center;
+        vertical-align: center;
+    }
+    
+    img.make-it-fit {
+        max-width: 99%;
+        max-height: 99%;
+    }
+  </style>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <div class="fill-screen">
+      <img class="make-it-fit" src="http://127.0.0.1:8000"/>
+    </div>
 
     <script>
       // You can also require other files to run in this process
