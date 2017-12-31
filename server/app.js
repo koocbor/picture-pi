@@ -6,7 +6,14 @@ var picturesDictionary = {};
 
 const fs = require('fs');
 const path = require('path');
-const walkSync = (d) => fs.statSync(d).isDirectory() ? fs.readdirSync(d).map(f => walkSync(path.join(d, f))) : d;
+
+const flatten = arr => arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatten(val) : val), []);
+Array.prototype.flatten = function() {return flatten(this)};
+
+const walkSync = dir => fs.readdirSync(dir)
+    .map(file => fs.statSync(path.join(dir, file)).isDirectory()
+        ? walkSync(path.join(dir, file))
+        : path.join(dir, file).replace(/\\/g, '/')).flatten();
 
 initPicturesDictionary();
 
@@ -48,9 +55,3 @@ function randomIntFromInterval(min,max) {
     max = parseInt(max);
     return Math.floor(Math.random()*(max-min+1)+min);
 }
-
-// function readDirRecursive(dir) {
-//     return FileSystem.statSync(dir).isDirectory()
-//         ? Array.prototype.concat(...FileSystem.readdirSync(dir).map(f => readDirRecursive(Path.join(dir, f))))
-//         : dir;
-// }
