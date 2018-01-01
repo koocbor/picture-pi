@@ -1,25 +1,55 @@
 require('dotenv').config()
-
-var http = require('http');
-
-var pictureArray = [];
+const express = require('express')
+const app = express()
 
 var exif = require('fast-exif');
 const fs = require('fs');
 var glob = require('glob');
 const path = require('path');
 
+var pictureArray = [];
 initPicturesArray();
 
-http.createServer(function (request, response) {
+app.get("/", function(request, response) {
 
     var selectedIndex = randomIntFromInterval(0, pictureArray.length);
     var selectedFilePath = pictureArray[selectedIndex];
 
     console.log(selectedFilePath);
 
+    var outObj = {}
+    outObj.photoPathEncoded = new Buffer(selectedFilePath).toString('base64');
+
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Content-Type', 'application/json');
+
     try {
-        var fileStream = fs.createReadStream(selectedFilePath);
+        exif.read(selectedFilePath).then(function(info) {
+            outObj.exifInfo = info;
+            response.send(outObj);    
+        })
+    } catch (e) {
+        response.send(outObj);
+    }    
+
+    // try {
+    //     var fileStream = fs.createReadStream(selectedFilePath);
+    //     fileStream.on('open', function() {
+    //         response.setHeader('Access-Control-Allow-Origin', '*');
+    //         response.setHeader('Content-Type', 'image/jpeg');
+    //         fileStream.pipe(response);
+    //     });
+    // } catch (e) {
+    //     response.setHeader('Content-Type', 'text/plain');
+    //     response.write('Please Try Again.');
+    // }
+});
+
+app.get("/photo/:pathEncoded", function(request, response) {
+    var decodedFilePath = new Buffer(request.params.pathEncoded, 'base64').toString('ascii')
+
+    try {
+        var fileStream = fs.createReadStream(decodedFilePath)
         fileStream.on('open', function() {
             response.setHeader('Access-Control-Allow-Origin', '*');
             response.setHeader('Content-Type', 'image/jpeg');
@@ -29,7 +59,11 @@ http.createServer(function (request, response) {
         response.setHeader('Content-Type', 'text/plain');
         response.write('Please Try Again.');
     }
-}).listen(8000);
+});
+
+app.listen(8000, function() {
+    console.log('Listening on port 8000');
+})
 
 function initPicturesArray() {
     glob(process.env.PICTURES_ROOT_DIR + "20*/**/*.+(jpg|jpeg)", {nocase: true}, function(err, files) {

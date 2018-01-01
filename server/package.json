@@ -9,6 +9,7 @@
     "author": "Rob Cook <robcook@gmail.com>",
     "dependencies": {
         "dotenv": "^4.0.0",
+        "express": "^4.16.2",
         "fast-exif": "^1.0.1",
         "glob": "^7.1.2"
     },
