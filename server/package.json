@@ -9,7 +9,8 @@
     "author": "Rob Cook <robcook@gmail.com>",
     "dependencies": {
         "dotenv": "^4.0.0",
-        "fast-exif": "^1.0.1"
+        "fast-exif": "^1.0.1",
+        "glob": "^7.1.2"
     },
     "repository": {
         "type": "git",
